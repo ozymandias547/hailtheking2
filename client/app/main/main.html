@@ -1,0 +1,45 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<header class="hero-unit" id="banner">
+  <div class="container">
+    <h1>~ HTK2 ~</h1>
+    <p class="lead">This will be the "State of the kingdom" map for a quick view into the server </p>
+  </div>
+</header>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6">
+      <h3>News:</h3>
+      <dl class="dl-horizontal newsFeedList" ng-repeat="item in newsItems">
+        <dt>{{item.date | amDateFormat:'MMMM Do YYYY'}}</dt>
+        <dd ng-bind-html="item.title"></dd>
+      </dl>
+    </div>
+    <div class="col-lg-6">
+      <h3>Top Kings: (dummy data)</h3> 
+      <h5>Sort by:
+      <button type="button" class="btn btn-default btn-xs" ng-click="predicate='gold'">Richest</button>
+      <button type="button" class="btn btn-default btn-xs" ng-click="predicate='population'">Most People</button>
+      <button type="button" class="btn btn-default btn-xs" ng-click="predicate='towns'">Most Towns</button>
+      </h5>
+      <table class="table table-hover">
+        <tr ng-repeat="user in userFeed | orderBy:predicate:true">
+          <td>{{user.name}}</td>
+          <td> {{user.population}} People</td>
+          <td> {{user.towns}} Towns</td>
+          <td> {{user.gold}} Gold</td>
+        </tr>
+      </table>
+
+      
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+  <p>Joseph Jung |
+         <a href="https://github.com/ozymandias547">Issues</a></p>
+  </div>
+</footer>
