@@ -2,6 +2,9 @@
 
 angular.module('hailTheKing2App')
   .controller('SettingsCtrl', function ($scope, User, Auth) {
+
+    angular.element("input[name='password']").focus();
+
     $scope.errors = {};
 
     $scope.changePassword = function(form) {

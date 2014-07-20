@@ -2,6 +2,9 @@
 
 angular.module('hailTheKing2App')
   .controller('LoginCtrl', function ($scope, Auth, $location, $window) {
+    
+    angular.element("input[name='email']").focus();
+
     $scope.user = {};
     $scope.errors = {};
 

@@ -4,12 +4,27 @@
 
 #banner {
     margin-bottom: 20px;
+    height: 350px;
+    background: url('/assets/images/map.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#banner .overlayText {
+    background: rgba(255,255,255,.8);
+    color: black;
+    border-radius: 2px;
+
 }
 
 #banner h1 {
     font-size: 60px;
     line-height: 1;
     letter-spacing: -1px;
+}
+
+#banner p {
+    font-size: 16px;
 }
 
 .hero-unit {

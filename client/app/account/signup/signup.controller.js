@@ -2,6 +2,9 @@
 
 angular.module('hailTheKing2App')
   .controller('SignupCtrl', function ($scope, Auth, $location) {
+    
+    angular.element("input[name='name']").focus();
+
     $scope.user = {};
     $scope.errors = {};
 
