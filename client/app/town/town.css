@@ -1,0 +1,30 @@
+
+.townContainer .townNameContainer {
+	text-align: center;
+}
+
+.townContainer .sameHeight {
+	height: 250px;
+	padding: 10px;
+}
+
+.townContainer .table {
+	margin-bottom: 0;
+}
+
+.townContainer .yields li,
+.townContainer .buildings li {
+	margin: 5px;
+}
+
+.townContainer .yields img {
+	width: 35px;
+	border: 1px solid black;
+}
+
+.townContainer .yields input[type="text"] {
+	width: 35px;
+	height: 30px;
+	vertical-align: middle;
+	text-align: center;
+}

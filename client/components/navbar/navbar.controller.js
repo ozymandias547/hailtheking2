@@ -5,10 +5,17 @@ angular.module('hailTheKing2App')
     $scope.menu = [{
       'title': 'Home',
       'link': '/',
+      loginOnly: false
+    },
+    {
+      'title': 'Towns',
+      'link': '/town',
+      loginOnly: true
     },
     {
       'title': 'Map',
       'link': '/map',
+      loginOnly: true
     }];
 
     $scope.isCollapsed = true;

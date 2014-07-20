@@ -3,8 +3,7 @@
 }
 
 #banner {
-    border-bottom: none;
-    margin-top: -20px;
+    margin-bottom: 20px;
 }
 
 #banner h1 {
@@ -39,5 +38,6 @@
     .newsFeedList dd{
         margin-left: 130px;
     }
-
+    
 }
+
