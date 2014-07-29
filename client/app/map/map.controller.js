@@ -5,6 +5,6 @@ angular.module('hailTheKing2App')
    	
 
    	Map.initializeMap();
-  
+  	
 
 }]);

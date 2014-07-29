@@ -8,19 +8,20 @@ angular.module('hailTheKing2App')
 				var mapElement = document.getElementById('map'),
 					stage = new PIXI.Stage(0x97c56e, true),
 					renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight, null),
-					texture = PIXI.Texture.fromImage("/assets/images/motte-bailey.png"),
-					tilingSprite = new PIXI.TilingSprite(texture, window.innerWidth, window.innerHeight);
+					townTexture = PIXI.Texture.fromImage("/assets/images/motte-bailey.png"),
+					caveTexture = PIXI.Texture.fromImage("/assets/images/cave.png"),
+					tilingSprite = new PIXI.TilingSprite(townTexture, window.innerWidth, window.innerHeight);
 
 				document.getElementById('map').appendChild(renderer.view)
 
 				requestAnimFrame(animate);
 
-				createTown(Math.random() * window.innerWidth, Math.random() * window.innerHeight)
+				game.getAll('towns').forEach(createTown);
+				game.getAll('caves').forEach(createCave);
 
-				function createTown(x, y) {
+				function createTown(newTown) {
 
-
-					var town = new PIXI.Sprite(texture);
+					var town = new PIXI.Sprite(townTexture);
 					
 					// enable the town to be interactive.. this will allow it to respond to mouse and touch events   
 					town.interactive = true;
@@ -33,43 +34,45 @@ angular.module('hailTheKing2App')
 					town.anchor.y = 0.5;
 
 					// scale the town based upon population.
-					town.scale.x = town.scale.y = 1;
+					town.scale.x = town.scale.y = .5;
 
-					// use the mousedown and touchstart
 					town.mousedown = town.touchstart = function(data) {
-						// data.originalEvent.preventDefault()
-						// store a refference to the data
-						// The reason for this is because of multitouch
-						// we want to track the movement of this particular touch
-						this.data = data;
-						this.alpha = 0.9;
-						this.dragging = true;
+						console.log("clicked on town #" + newTown.id)
 					};
-
-					// set the events for when the mouse is released or a touch is released
-					town.mouseup = town.mouseupoutside = town.touchend = town.touchendoutside = function(data) {
-						this.alpha = 1
-						this.dragging = false;
-						// set the interaction data to null
-						this.data = null;
-					};
-
-					// set the callbacks for when the mouse or a touch moves
-					town.mousemove = town.touchmove = function(data) {
-						if (this.dragging) {
-							// need to get parent coords..
-							var newPosition = this.data.getLocalPosition(this.parent);
-							this.position.x = newPosition.x;
-							this.position.y = newPosition.y;
-						}
-					}
 
 					// move the sprite to its designated position
-					town.position.x = x;
-					town.position.y = y;
+					town.position.x = newTown.x;
+					town.position.y = newTown.y;
 
 					// add it to the stage
 					stage.addChild(town);
+				}
+
+				function createCave(newCave) {
+
+					var cave = new PIXI.Sprite(caveTexture);
+					
+					// enable the town to be interactive.. this will allow it to respond to mouse and touch events   
+					cave.interactive = true;
+					cave.buttonMode = true;
+
+					// center the towns anchor point
+					cave.anchor.x = 0.5;
+					cave.anchor.y = 0.5;
+
+					// scale the town based upon population.
+					cave.scale.x = cave.scale.y = .1;
+
+					cave.mousedown = cave.touchstart = function(data) {
+						console.log("clicked on the cave.")
+					};
+
+					// move the sprite to its designated position
+					cave.position.x = newCave.x;
+					cave.position.y = newCave.y;
+
+					// add it to the stage
+					stage.addChild(cave);
 				}
 
 				function animate() {

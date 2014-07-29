@@ -15,7 +15,6 @@ angular.module('hailTheKing2App')
 
 			// Get the newest user feed and subscribe via sockets for a realtime leaderboard.
 			$http.get('/api/userfeed').success(function(userFeed) {
-				console.log(userFeed)
 				$scope.userFeed = userFeed;
 				socket.syncUpdates('userfeed', $scope.userFeed);
 			});
