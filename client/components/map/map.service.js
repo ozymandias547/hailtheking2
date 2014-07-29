@@ -26,7 +26,7 @@ angular.module('hailTheKing2App')
 						},
 						texture : armyTexture,
 						interactive : true,
-						onclick: function() { 
+						onclick: function(e) { 
 							console.log('clicked on army #' + army.id); 
 						}
 					});
@@ -42,7 +42,8 @@ angular.module('hailTheKing2App')
 						}, 
 						texture : townTexture,
 						interactive : true,
-						onclick: function() { 
+						onclick: function(e) { 
+							console.log(e);
 							console.log('clicked on town #' + town.id); 
 						}
 					});
@@ -58,7 +59,7 @@ angular.module('hailTheKing2App')
 						},
 						texture : caveTexture,
 						interactive : true,
-						onclick: function() { 
+						onclick: function(e) { 
 							console.log('clicked on cave #' + cave.id); 
 						}
 					});
@@ -67,6 +68,8 @@ angular.module('hailTheKing2App')
 				requestAnimFrame(animate);
 
 				function createSprite(newObject) {
+
+					// TODO: add some null checks just in case...
 
 					var mySprite = new PIXI.Sprite(newObject.texture);
 
@@ -80,20 +83,19 @@ angular.module('hailTheKing2App')
 					mySprite.anchor.x = 0.5;
 					mySprite.anchor.y = 0.5;
 
-					// scale the town based upon population.
+					// scale the town based upon scaling function.
 					mySprite.scale.x = mySprite.scale.y = newObject.scale();
 
 					mySprite.mousedown = newObject.onclick;
 
-					// TODO: convert object world coordinates to viewport coords.
-					mySprite.position.x = newObject.x;
-					mySprite.position.y = newObject.y;
+					mySprite.position.x = worldToViewportX(newObject.x);
+					mySprite.position.y = worldToViewportY(newObject.y);
 
 					newObject.element.sprite = mySprite;
 
 					// add it to the stage
 					stage.addChild(mySprite);
-				}
+				};
 
 
 				function animate() {
@@ -104,15 +106,22 @@ angular.module('hailTheKing2App')
 					game.onTick(now - then);
 
 					game.getAll('armies').forEach(function(army) {
-						// TODO: convert armies world coordinates to viewport coords.
-						army.sprite.position.x = army.x;
-						army.sprite.position.y = army.y;
+						army.sprite.position.x = worldToViewportX(army.x);
+						army.sprite.position.y = worldToViewportY(army.y);
 					});
 
 					renderer.render(stage);
 						
 					then = now;
-				}
+				};
+
+				function worldToViewportX(worldX) {
+					return worldX;
+				};
+
+				function worldToViewportY(worldY) {
+					return worldY;
+				};
 
 			}
 		};
