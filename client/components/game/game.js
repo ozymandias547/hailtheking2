@@ -10,10 +10,11 @@ Game.prototype = {
 		// 0 - no debugging. just fatal errors.
 		// 1 - shows warnings;
 		// 2 - show warnings and all processes
+		// 3 - WAYYY too much loggin
 		
 		var defaults = {
 			gameName : "game",
-			debugLevel : 2
+			debugLevel : 1
 		}
 
 		this.settings = {};
@@ -27,12 +28,14 @@ Game.prototype = {
 				name: "myTownA",
 				x: 100,
 				y: 300,
+				population: 50,
 				ownerId: 123
 			}, {
 				id: 2,
 				name: "myTownB",
 				x: 400,
 				y: 200,
+				population: 100,
 				ownerId: 456
 			}],
 
@@ -44,13 +47,34 @@ Game.prototype = {
 				id: 2,
 				x: 600,
 				y: 600,
-			}]
+			}],
 
+			armies: [{
+				id: 1,
+				x: 150,
+				y: 150,
+				size: 100
+			},
+			{
+				id: 2,
+				x: 250,
+				y: 150,
+				size: 200
+			}]
 		};
 
 		window[this.settings.name] = this;
 
 		this.log("initializing game object.", 2	)
+	},
+
+	onTick: function(elapsedTime) {
+		
+		this.cache.armies.forEach(function(army) {
+			army.x += .01 * elapsedTime;
+			army.y += .01 * elapsedTime;
+		});
+
 	},
 
 	syncGameCache: function() {

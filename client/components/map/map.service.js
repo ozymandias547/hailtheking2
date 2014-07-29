@@ -10,74 +10,108 @@ angular.module('hailTheKing2App')
 					renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight, null),
 					townTexture = PIXI.Texture.fromImage("/assets/images/motte-bailey.png"),
 					caveTexture = PIXI.Texture.fromImage("/assets/images/cave.png"),
-					tilingSprite = new PIXI.TilingSprite(townTexture, window.innerWidth, window.innerHeight);
+					armyTexture = PIXI.Texture.fromImage("/assets/images/army.jpg"),
+					tilingSprite = new PIXI.TilingSprite(townTexture, window.innerWidth, window.innerHeight),
+					then = Date.now();
 
 				document.getElementById('map').appendChild(renderer.view)
 
+				game.getAll('armies').forEach(function(army) {
+					createSprite({
+						element: army,
+						x: army.x,
+						y: army.y,
+						scale: function() {
+							return .001 * army.size;
+						},
+						texture : armyTexture,
+						interactive : true,
+						onclick: function() { 
+							console.log('clicked on army #' + army.id); 
+						}
+					});
+				});
+
+				game.getAll('towns').forEach(function(town) {
+					createSprite({
+						element: town,
+						x: town.x,
+						y: town.y,
+						scale: function() {
+							return .01 * town.population;
+						}, 
+						texture : townTexture,
+						interactive : true,
+						onclick: function() { 
+							console.log('clicked on town #' + town.id); 
+						}
+					});
+				});
+
+				game.getAll('caves').forEach(function(cave) {
+					createSprite({
+						element: cave,
+						x: cave.x,
+						y: cave.y,
+						scale: function() {
+							return .1;
+						},
+						texture : caveTexture,
+						interactive : true,
+						onclick: function() { 
+							console.log('clicked on cave #' + cave.id); 
+						}
+					});
+				});
+
 				requestAnimFrame(animate);
 
-				game.getAll('towns').forEach(createTown);
-				game.getAll('caves').forEach(createCave);
+				function createSprite(newObject) {
 
-				function createTown(newTown) {
+					var mySprite = new PIXI.Sprite(newObject.texture);
 
-					var town = new PIXI.Sprite(townTexture);
+					// enable the town to be interactive.. this will allow it to respond to mouse and touch events   					
+					if (newObject.interactive) {
+						mySprite.interactive = true;
+						mySprite.buttonMode = true;
+					}
 					
-					// enable the town to be interactive.. this will allow it to respond to mouse and touch events   
-					town.interactive = true;
-
-					// this button mode will mean the hand cursor appears when you rollover the town with your mouse
-					town.buttonMode = true;
-
 					// center the towns anchor point
-					town.anchor.x = 0.5;
-					town.anchor.y = 0.5;
+					mySprite.anchor.x = 0.5;
+					mySprite.anchor.y = 0.5;
 
 					// scale the town based upon population.
-					town.scale.x = town.scale.y = .5;
+					mySprite.scale.x = mySprite.scale.y = newObject.scale();
 
-					town.mousedown = town.touchstart = function(data) {
-						console.log("clicked on town #" + newTown.id)
-					};
+					mySprite.mousedown = newObject.onclick;
 
-					// move the sprite to its designated position
-					town.position.x = newTown.x;
-					town.position.y = newTown.y;
+					// TODO: convert object world coordinates to viewport coords.
+					mySprite.position.x = newObject.x;
+					mySprite.position.y = newObject.y;
 
-					// add it to the stage
-					stage.addChild(town);
-				}
-
-				function createCave(newCave) {
-
-					var cave = new PIXI.Sprite(caveTexture);
-					
-					// enable the town to be interactive.. this will allow it to respond to mouse and touch events   
-					cave.interactive = true;
-					cave.buttonMode = true;
-
-					// center the towns anchor point
-					cave.anchor.x = 0.5;
-					cave.anchor.y = 0.5;
-
-					// scale the town based upon population.
-					cave.scale.x = cave.scale.y = .1;
-
-					cave.mousedown = cave.touchstart = function(data) {
-						console.log("clicked on the cave.")
-					};
-
-					// move the sprite to its designated position
-					cave.position.x = newCave.x;
-					cave.position.y = newCave.y;
+					newObject.element.sprite = mySprite;
 
 					// add it to the stage
-					stage.addChild(cave);
+					stage.addChild(mySprite);
 				}
+
 
 				function animate() {
+					var now = Date.now();
+
 					requestAnimFrame(animate);
+					
+					game.onTick(now - then);
+
+					game.getAll('armies').forEach(function(army) {
+						// TODO: convert armies world coordinates to viewport coords.
+						army.sprite.position.x = army.x;
+						army.sprite.position.y = army.y;
+					});
+
 					renderer.render(stage);
+						
+					then = now;
 				}
 
 			}
