@@ -77,6 +77,9 @@ Game.prototype = {
 
 	},
 
+	/* syncGameCache - a method to reach out to the server and double check the game cache is synced correctly.
+	*/
+
 	syncGameCache: function() {
 
 	},
